@@ -50,6 +50,11 @@ func query(city string) (WeatherData, error) {
 
 	defer response.Body.Close()
 
+	if response.StatusCode != http.StatusOK {
+		log.Printf("Received on-200 response from API: %d \n", response.StatusCode)
+		return WeatherData{}, err
+	}
+
 	var d WeatherData
 	if err := json.NewDecoder(response.Body).Decode(&d); err != nil {
 		return WeatherData{}, err
